@@ -12,6 +12,39 @@ CONST_CEREBRO = 'C'
 CONST_PASSOS = 'P'
 CONST_MAXIMO_JOGADORES = 6 # constante ultilizada para regra do jogo
 CONST_MINIMO_JOGADORES = 2
+DADO_VERDE_6 = "CPCTPC"
+DADO_AMARELHO_4 = "TPCTPC"
+DADO_VERMELHO_3 = "TPTCPT"
+LISTA_DADOS = [
+DADO_VERDE_6,DADO_VERDE_6,DADO_VERDE_6,DADO_VERDE_6,DADO_VERDE_6,DADO_VERDE_6,
+DADO_AMARELHO_4, DADO_AMARELHO_4, DADO_AMARELHO_4, DADO_AMARELHO_4,
+DADO_VERMELHO_3,DADO_VERMELHO_3,DADO_VERMELHO_3]
+
+class Jogador:
+    nome = ''
+    dados = []
+    cerebros = 0
+    tiros = 0
+    passos = 0 
+
+def rolarDado():
+    numSorteado = random.randrange(0, 13)
+    dadoSorteado = LISTA_DADOS[numSorteado]
+
+    if  (dadoSorteado == DADO_VERDE_6):
+        corDado ='VERDE'
+
+    elif (dadoSorteado == DADO_AMARELHO_4):
+        corDado = 'AMARELO'
+
+    else: # (dadoSorteado == DADO_VERMELHO_3)
+        corDado = 'VERMELHO'
+    
+    faceDado = random.choice(dadoSorteado)
+    return faceDado, corDado;
+
+
+
 print("Seja bem-vindo ao jogo Zombie Dice!");
 #bloco de condições de quantidade de jogadores
 quantidadeJogador = 0
@@ -31,87 +64,44 @@ for i in range(nJogadores):
     nome = input("Digite o nome do jogador: " + str (i + 1 ) + ": ");
     if nome == "sair":
         break
-    listaJogadores.append(nome)
-jogadores = listaJogadores
-print(jogadores)
+    jogador = Jogador()
+    jogador.nome = nome
+    listaJogadores.append(jogador)
+for jogador in listaJogadores:
+    print(jogador.nome)
 
 #inicio
 
-#dados
-dadoVerde6 = random.choice("CPCTPC")
-#print (dadoVerde6)
-dadoAmarelo4 = random.choice("TPCTPC")
-#print (dadoAmarelo4)
-dadoVermelho3 = random.choice("TPTCPT")
-# #print (dadoVermelho3)
 
-listaDados = [
-dadoVerde6,dadoVerde6,dadoVerde6,dadoVerde6,dadoVerde6,dadoVerde6,
-dadoAmarelo4, dadoAmarelo4, dadoAmarelo4, dadoAmarelo4,
-dadoVermelho3,dadoVermelho3,dadoVermelho3]
 
 print('Que comecem os jogos!!')
 #rounds 
 jogadorAtual = 0;
-dadosSorteados = [];
-tiros = 0;
-cerebros = 0;
-passos = 0;
+quantidadeDados = 3;
 
 while True:
-    print("TURNO DO JOGADOR ", listaJogadores[jogadorAtual]);
-    
-    for i in 0 3  1:
-        numSorteado = random.choices(0, 12)
-        dadoSorteado = listaDados[numSorteado]
-
-    if  (dadoSorteado == 'CPCTPC'):
-        corDado ='VERDE'
-
-    elif (dadoSorteado == 'TPCTPC'):
-        corDado = 'AMARELO'
-
-    elif  (dadoSorteado == 'TPTCPT'):
-        corDado = 'VERMELHO'
-        break
-
-print("Dado sorteado: ", corDado);
-
-dadosSorteados[i] = dadoSorteado;
-
-print("As faces sorteadas foram: ")
-
-for dadoSorteado in dadosSorteados:
-    numFaceDado = random.choices(0, 5);
-if dadoSorteado[numFaceDado] == "C":
-    print("- cerebros (você comeu um cerebro)");
-    cerebros = cerebros + 1;
-elif dadoSorteado[numFaceDado] == "T":
-    print("- TIRO (você levou um tiro)");
-    tiros = tiros + 1;
-elif dadoSorteado[numFaceDado] == "P":
-    print("- PASSOS (uma vitima escapou)");
-    passos = passos + 1;
-
-print("SCORE ATUAL: ");
-print("cerebros: ", cerebros);
-print("TIROS: ", tiros);
-
-print("AVISO: você deseja continuar jogando dados? (s=sim / n=não)");
-
-
-continuarTurno = input('continuar Turno:');
-
-if continuarTurno == 'n':
-    jogadorAtual = jogadorAtual + 1;
-    dadosSorteados = [];
-    tiros = 0;
-    cerebros = 0;
-    passos = 0;
-
-if (jogadorAtual == range(listaJogadores)):
-    print("Finalizando protótipo do jogo...");
-
-else:
-    print("Iniciando mais uma rodada do turno atual...");
-    dadosSorteados = [];
+    print("TURNO DO JOGADOR " + listaJogadores[jogadorAtual].nome);
+    passos = 0
+    for i in range(quantidadeDados):
+        faceDado, corDado = rolarDado() 
+        print(faceDado, corDado)
+        listaJogadores[jogadorAtual].dados.append((faceDado,corDado))
+        if faceDado =='T':
+            listaJogadores[jogadorAtual].tiros+= 1
+        elif faceDado == 'C':
+            listaJogadores[jogadorAtual].cerebros+= 1
+        else: 
+            listaJogadores[jogadorAtual].passos+=1
+            passos+=1
+        
+    if passos > 0:
+        quantidadeDados = passos
+        continuarTurno = input(listaJogadores[jogadorAtual].nome + ' dejesa continuar rolando?')
+        if continuarTurno == 'sim':
+            continue
+            
+    quantidadeDados = 3
+    jogadorAtual+=1
+    if jogadorAtual >= nJogadores:
+        jogadorAtual = 0
+    input('Digite qualquer tecla para proximo jogador')
