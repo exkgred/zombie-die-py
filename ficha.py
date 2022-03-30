@@ -48,7 +48,7 @@ def contabilizarResultados(listaJogadores):
         if jogador.cerebros >= 13:
             return jogador.nome 
     return ''
-def derrota(listaJogadores)
+def derrota(listaJogadores):
     for jogador in listaJogadores:
         if jogador.tiros == 3:
             return jogador.nome
