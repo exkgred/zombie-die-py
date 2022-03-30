@@ -43,7 +43,16 @@ def rolarDado():
     faceDado = random.choice(dadoSorteado)
     return faceDado, corDado;
 
-
+def contabilizarResultados(listaJogadores):
+    for jogador in listaJogadores:
+        if jogador.cerebros >= 13:
+            return jogador.nome 
+    return ''
+def derrota(listaJogadores)
+    for jogador in listaJogadores:
+        if jogador.tiros == 3:
+            return jogador.nome
+    return ''
 
 print("Seja bem-vindo ao jogo Zombie Dice!");
 #bloco de condições de quantidade de jogadores
@@ -72,14 +81,16 @@ for jogador in listaJogadores:
 
 #inicio
 
-
-
 print('Que comecem os jogos!!')
 #rounds 
 jogadorAtual = 0;
 quantidadeDados = 3;
 
 while True:
+    vencedor = contabilizarResultados(listaJogadores)
+    if vencedor != '':
+        print(vencedor + ' você é o vencedor')
+        break
     print("TURNO DO JOGADOR " + listaJogadores[jogadorAtual].nome);
     passos = 0
     for i in range(quantidadeDados):
@@ -93,15 +104,16 @@ while True:
         else: 
             listaJogadores[jogadorAtual].passos+=1
             passos+=1
-        
+    print('Quantidade de '+ listaJogadores[jogadorAtual].nome +' cerebros '  + str (listaJogadores[jogadorAtual].cerebros))
     if passos > 0:
         quantidadeDados = passos
         continuarTurno = input(listaJogadores[jogadorAtual].nome + ' dejesa continuar rolando?')
         if continuarTurno == 'sim':
             continue
             
+
     quantidadeDados = 3
     jogadorAtual+=1
-    if jogadorAtual >= nJogadores:
+    if jogadorAtual >= len(listaJogadores):
         jogadorAtual = 0
     input('Digite qualquer tecla para proximo jogador')
