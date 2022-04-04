@@ -4,6 +4,7 @@ import itertools
 from os import remove
 import poplib
 import random
+from timeit import repeat
 
 CEEEREBROS = 'ceeerebros'
 CONST_TIRO = 'T'
@@ -87,6 +88,11 @@ jogadorAtual = 0;
 quantidadeDados = 3;
 
 while True:
+    jogadorDerrotado = derrota(listaJogadores) 
+    if jogadorDerrotado != '':
+        print(jogadorDerrotado + ' até o próximo turno')
+        continue
+
     vencedor = contabilizarResultados(listaJogadores)
     if vencedor != '':
         print(vencedor + ' você é o vencedor')
@@ -106,12 +112,13 @@ while True:
             passos+=1
     print('Quantidade de '+ listaJogadores[jogadorAtual].nome +' cerebros '  + str (listaJogadores[jogadorAtual].cerebros))
     if passos > 0:
-        quantidadeDados = passos
+        quantidadeDados = passos 
+        #tirosAtuais = tiros
+
         continuarTurno = input(listaJogadores[jogadorAtual].nome + ' dejesa continuar rolando?')
         if continuarTurno == 'sim':
             continue
-            
-
+          
     quantidadeDados = 3
     jogadorAtual+=1
     if jogadorAtual >= len(listaJogadores):
