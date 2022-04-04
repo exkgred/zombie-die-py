@@ -113,10 +113,10 @@ while True:
     print('Quantidade de '+ listaJogadores[jogadorAtual].nome +' cerebros '  + str (listaJogadores[jogadorAtual].cerebros))
     if passos > 0:
         quantidadeDados = passos 
-        #tirosAtuais = tiros
 
-        continuarTurno = input(listaJogadores[jogadorAtual].nome + ' dejesa continuar rolando?')
-        if continuarTurno == 'sim':
+        #tirosAtuais = tiros
+    continuarTurno = input(listaJogadores[jogadorAtual].nome + ' dejesa continuar rolando?')
+    if continuarTurno == 'sim':
             continue
           
     quantidadeDados = 3
