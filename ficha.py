@@ -29,12 +29,12 @@ class Jogador:
     tiros = 0
     passos = 0 
 
-def rolarDado(corDadoRepeticao): 
+def rolarDado(tubo,corDadoRepeticao): 
     if corDadoRepeticao != '':
         faceDado = random.choice (corDadoRepeticao)
         return faceDado, corDadoRepeticao;
-    numSorteado = random.randrange(0, 13)
-    dadoSorteado = LISTA_DADOS[numSorteado] 
+    numSorteado = random.randrange(0, len(tubo))
+    dadoSorteado = tubo[numSorteado] 
     faceDado = random.choice(dadoSorteado)
     return faceDado, dadoSorteado;
 
@@ -91,45 +91,46 @@ print('Que comecem os jogos!!')
 #rounds 
 jogadorAtual = 0;
 dadosAtuais =['', '', '']
-
+tubo=LISTA_DADOS.copy()
 
 while True: #turno
 
     print("TURNO DO JOGADOR " + listaJogadores[jogadorAtual].nome);
-    passos = 0
     for index, value in enumerate (dadosAtuais):
-        faceDado, corDado = rolarDado(value)
+        faceDado, corDado = rolarDado(tubo, value)
         print(faceDado, converterCor(corDado))
         listaJogadores[jogadorAtual].dados.append((faceDado,corDado))
         if faceDado =='T':
             listaJogadores[jogadorAtual].tiros+= 1
             dadosAtuais [index] = ''
+            tubo.remove(corDado)
         elif faceDado == 'C':
             listaJogadores[jogadorAtual].cerebros+= 1
             dadosAtuais [index] = ''
+            tubo.remove(corDado)
         else: 
             listaJogadores[jogadorAtual].passos+=1
-            passos+=1
             dadosAtuais [index] = corDado
-        
+        print (tubo)
     print('Quantidade de '+ listaJogadores[jogadorAtual].nome +' cerebros '  + str (listaJogadores[jogadorAtual].cerebros))
-    if passos > 0:
-
-        continuarTurno = input(listaJogadores[jogadorAtual].nome + ' dejesa continuar rolando?')
+    if len(tubo) >= 3:
+        continuarTurno = input(listaJogadores[jogadorAtual].nome + ' dejesa continuar rolando? ')# ter tirado passos e ter 3 dados
         if continuarTurno == 'sim':
             continue
+
           
     dadosAtuais = ['', '', '']
+    tubo = LISTA_DADOS.copy()
     jogadorAtual+=1
     if jogadorAtual >= len(listaJogadores):
         jogadorAtual = 0
+            
             # vencedor = contabilizarResultados(listaJogadores)
             # if vencedor != '':
             #     print(vencedor + ' você é o vencedor')
             #     break
     input('Digite qualquer tecla para proximo jogador')
 
-    #tubo
     #regra de tiros
     #regra de pontos
     #regra de terminar
