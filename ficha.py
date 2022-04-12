@@ -1,6 +1,7 @@
 #Joshua Silva, Analise e desenvolvimento de softwares
 from asyncore import read
 import itertools
+from lib2to3.pytree import convert
 from os import remove
 import poplib
 import random
@@ -28,21 +29,25 @@ class Jogador:
     tiros = 0
     passos = 0 
 
-def rolarDado():
+def rolarDado(corDadoRepeticao): 
+    if corDadoRepeticao != '':
+        faceDado = random.choice (corDadoRepeticao)
+        return faceDado, corDadoRepeticao;
     numSorteado = random.randrange(0, 13)
-    dadoSorteado = LISTA_DADOS[numSorteado]
-
-    if  (dadoSorteado == DADO_VERDE_6):
-        corDado ='VERDE'
-
-    elif (dadoSorteado == DADO_AMARELHO_4):
-        corDado = 'AMARELO'
-
-    else: # (dadoSorteado == DADO_VERMELHO_3)
-        corDado = 'VERMELHO'
-    
+    dadoSorteado = LISTA_DADOS[numSorteado] 
     faceDado = random.choice(dadoSorteado)
-    return faceDado, corDado;
+    return faceDado, dadoSorteado;
+
+def converterCor (corDado): 
+    if  (corDado == DADO_VERDE_6):
+        corDado1 ='VERDE'
+
+    elif (corDado == DADO_AMARELHO_4):
+        corDado1 = 'AMARELO'
+
+    else:
+        corDado1 = 'VERMELHO' 
+    return corDado1;
 
 def contabilizarResultados(listaJogadores):
     for jogador in listaJogadores:
@@ -85,42 +90,41 @@ for jogador in listaJogadores:
 print('Que comecem os jogos!!')
 #rounds 
 jogadorAtual = 0;
-quantidadeDados = 3;
+dadosAtuais =['', '', '']
 
-while True:
-    jogadorDerrotado = derrota(listaJogadores) 
-    if jogadorDerrotado != '':
-        print(jogadorDerrotado + ' até o próximo turno')
-        continue
 
-    vencedor = contabilizarResultados(listaJogadores)
-    if vencedor != '':
-        print(vencedor + ' você é o vencedor')
-        break
+while True: #turno
+
     print("TURNO DO JOGADOR " + listaJogadores[jogadorAtual].nome);
     passos = 0
-    for i in range(quantidadeDados):
-        faceDado, corDado = rolarDado() 
-        print(faceDado, corDado)
+    for index, value in enumerate (dadosAtuais):
+        faceDado, corDado = rolarDado(value)
+        print(faceDado, converterCor(corDado))
         listaJogadores[jogadorAtual].dados.append((faceDado,corDado))
         if faceDado =='T':
             listaJogadores[jogadorAtual].tiros+= 1
+            dadosAtuais [index] = ''
         elif faceDado == 'C':
             listaJogadores[jogadorAtual].cerebros+= 1
+            dadosAtuais [index] = ''
         else: 
             listaJogadores[jogadorAtual].passos+=1
             passos+=1
+            dadosAtuais [index] = corDado
+        
     print('Quantidade de '+ listaJogadores[jogadorAtual].nome +' cerebros '  + str (listaJogadores[jogadorAtual].cerebros))
     if passos > 0:
-        quantidadeDados = passos 
-        #tirosAtuais = tiros
 
         continuarTurno = input(listaJogadores[jogadorAtual].nome + ' dejesa continuar rolando?')
         if continuarTurno == 'sim':
             continue
           
-    quantidadeDados = 3
+    dadosAtuais = ['', '', '']
     jogadorAtual+=1
     if jogadorAtual >= len(listaJogadores):
         jogadorAtual = 0
+            # vencedor = contabilizarResultados(listaJogadores)
+            # if vencedor != '':
+            #     print(vencedor + ' você é o vencedor')
+            #     break
     input('Digite qualquer tecla para proximo jogador')
