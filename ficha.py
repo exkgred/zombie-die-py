@@ -50,16 +50,6 @@ def converterCor (corDado):
         corDado1 = 'VERMELHO' 
     return corDado1;
 
-def contabilizarResultados(listaJogadores):
-    for jogador in listaJogadores:
-        if jogador.cerebros >= 13:
-            return jogador.nome 
-    return ''
-def derrota(listaJogadores):
-    for jogador in listaJogadores:
-        if jogador.tiros == 3:
-            return jogador.nome
-    return ''
 
 print("Seja bem-vindo ao jogo Zombie Dice!");
 #bloco de condições de quantidade de jogadores
@@ -116,7 +106,9 @@ while True:
             listaJogadores[jogadorAtual].passos+=1
             dadosAtuais [index] = corDado
         print (tubo)
-    print('Quantidade de '+ listaJogadores[jogadorAtual].nome +' cerebros '  + str (listaJogadores[jogadorAtual].cerebros))
+    print('você comeu '+ str (cerebros) + ' cerebros')
+    print('você levou ' + str(tiros)+ ' tiros')
+    
     if tiros >= 3:
         cerebros = 0
     #continuar
@@ -128,19 +120,19 @@ while True:
     
     #proximo jogador
     dadosAtuais = ['', '', '']
-    tubo = LISTA_DADOS.copy()
-    jogadorAtual+=1
+    tubo = LISTA_DADOS.copy() 
     listaJogadores[jogadorAtual].cerebros+=cerebros
+    print('O jogador '+ listaJogadores[jogadorAtual].nome +' tem '  + str (listaJogadores[jogadorAtual].cerebros) + ' pontos')
     cerebros=0
+    tiros=0
+    jogadorAtual+=1
 
     #resetar o turno
     if jogadorAtual >= len(listaJogadores):
         jogadorAtual = 0
-            
-                # vencedor = contabilizarResultados(listaJogadores)
-                # if vencedor != '':
-                #     print(vencedor + ' você é o vencedor')
-                #     break
+        for jogador in listaJogadores:
+            if jogador.cerebros >= 13:
+                print(jogador.nome)
     input('Digite qualquer tecla para proximo jogador')
 
     #regra de terminar
