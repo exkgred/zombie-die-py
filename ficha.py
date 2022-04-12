@@ -132,7 +132,11 @@ while True:
         jogadorAtual = 0
         for jogador in listaJogadores:
             if jogador.cerebros >= 13:
-                print(jogador.nome)
+                len(jogador) == 1
+                print('O jogador '+jogador.nome+ ' foi o vencedor')
+            elif jogador.cerebros >= 13:
+                len(jogador) != 1
+                print('Houve um empate entre os jogadores '+jogador.nome)
     input('Digite qualquer tecla para proximo jogador')
 
     #regra de terminar
