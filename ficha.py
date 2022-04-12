@@ -128,3 +128,9 @@ while True: #turno
             #     print(vencedor + ' você é o vencedor')
             #     break
     input('Digite qualquer tecla para proximo jogador')
+
+    #tubo
+    #regra de tiros
+    #regra de pontos
+    #regra de terminar
+    #regra de empate
