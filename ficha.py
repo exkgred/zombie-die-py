@@ -1,10 +1,13 @@
 #Joshua Silva, Analise e desenvolvimento de softwares
 from asyncore import read
 import itertools
+from lib2to3.pytree import convert
+from msilib import CreateRecord
 from os import remove
 import poplib
 import random
 from timeit import repeat
+import sys
 
 CEEEREBROS = 'ceeerebros'
 CONST_TIRO = 'T'
@@ -27,34 +30,22 @@ class Jogador:
     cerebros = 0
     tiros = 0
     passos = 0 
-
-def rolarDado():
-    numSorteado = random.randrange(0, 13)
-    dadoSorteado = LISTA_DADOS[numSorteado]
-
-    if  (dadoSorteado == DADO_VERDE_6):
-        corDado ='VERDE'
-
-    elif (dadoSorteado == DADO_AMARELHO_4):
-        corDado = 'AMARELO'
-
-    else: # (dadoSorteado == DADO_VERMELHO_3)
-        corDado = 'VERMELHO'
-    
+def rolarDado(tubo,corDadoRepeticao): 
+    if corDadoRepeticao != '':
+        faceDado = random.choice (corDadoRepeticao)
+        return faceDado, corDadoRepeticao;
+    numSorteado = random.randrange(0, len(tubo))
+    dadoSorteado = tubo[numSorteado] 
     faceDado = random.choice(dadoSorteado)
-    return faceDado, corDado;
-
-def contabilizarResultados(listaJogadores):
-    for jogador in listaJogadores:
-        if jogador.cerebros >= 13:
-            return jogador.nome 
-    return ''
-def derrota(listaJogadores):
-    for jogador in listaJogadores:
-        if jogador.tiros == 3:
-            return jogador.nome
-    return ''
-
+    return faceDado, dadoSorteado;
+def converterCor (corDado): 
+    if  (corDado == DADO_VERDE_6):
+        corDado1 ='VERDE'
+    elif (corDado == DADO_AMARELHO_4):
+        corDado1 = 'AMARELO'
+    else:
+        corDado1 = 'VERMELHO' 
+    return corDado1;
 print("Seja bem-vindo ao jogo Zombie Dice!");
 #bloco de condições de quantidade de jogadores
 quantidadeJogador = 0
@@ -79,48 +70,65 @@ for i in range(nJogadores):
     listaJogadores.append(jogador)
 for jogador in listaJogadores:
     print(jogador.nome)
-
 #inicio
-
 print('Que comecem os jogos!!')
 #rounds 
 jogadorAtual = 0;
-quantidadeDados = 3;
-
+dadosAtuais =['', '', '']
+tubo=LISTA_DADOS.copy()
+tiros = 0
+cerebros = 0
 while True:
-    jogadorDerrotado = derrota(listaJogadores) 
-    if jogadorDerrotado != '':
-        print(jogadorDerrotado + ' até o próximo turno')
-        continue
-
-    vencedor = contabilizarResultados(listaJogadores)
-    if vencedor != '':
-        print(vencedor + ' você é o vencedor')
-        break
+    
     print("TURNO DO JOGADOR " + listaJogadores[jogadorAtual].nome);
-    passos = 0
-    for i in range(quantidadeDados):
-        faceDado, corDado = rolarDado() 
-        print(faceDado, corDado)
+    #rolar dados
+    for index, value in enumerate (dadosAtuais):
+        faceDado, corDado = rolarDado(tubo, value)
+        print(faceDado, converterCor(corDado))
         listaJogadores[jogadorAtual].dados.append((faceDado,corDado))
         if faceDado =='T':
-            listaJogadores[jogadorAtual].tiros+= 1
+            tiros+= 1
+            dadosAtuais [index] = ''
+            tubo.remove(corDado)
         elif faceDado == 'C':
-            listaJogadores[jogadorAtual].cerebros+= 1
+            cerebros+= 1
+            dadosAtuais [index] = ''
+            tubo.remove(corDado)
         else: 
             listaJogadores[jogadorAtual].passos+=1
-            passos+=1
-    print('Quantidade de '+ listaJogadores[jogadorAtual].nome +' cerebros '  + str (listaJogadores[jogadorAtual].cerebros))
-    if passos > 0:
-        quantidadeDados = passos 
-
-        #tirosAtuais = tiros
-    continuarTurno = input(listaJogadores[jogadorAtual].nome + ' dejesa continuar rolando?')
-    if continuarTurno == 'sim':
+            dadosAtuais [index] = corDado
+        #print (tubo)
+    print('você comeu '+ str (cerebros) + ' cerebros')
+    print('você levou ' + str(tiros)+ ' tiros')
+    
+    if tiros >= 3:
+        cerebros = 0
+    #continuar
+    elif len(tubo) >= 3:
+        continuarTurno = input(listaJogadores[jogadorAtual].nome + ' dejesa continuar rolando? ')# ter tirado passos e ter 3 dados
+        if continuarTurno == 'sim':
             continue
-          
-    quantidadeDados = 3
+    
+    
+    #proximo jogador
+    dadosAtuais = ['', '', '']
+    tubo = LISTA_DADOS.copy() 
+    listaJogadores[jogadorAtual].cerebros+=cerebros
+    print('O jogador '+ listaJogadores[jogadorAtual].nome +' tem '  + str (listaJogadores[jogadorAtual].cerebros) + ' pontos')
+    cerebros=0
+    tiros=0
     jogadorAtual+=1
+    #resetar o turno
     if jogadorAtual >= len(listaJogadores):
         jogadorAtual = 0
-    input('Digite qualquer tecla para proximo jogador')
+        vitoria = cerebros==13
+        for jogador in listaJogadores:
+            if jogador.cerebros >= 13:
+                jogador.cerebros==vitoria
+                sys.exit('O jogador '+jogador.nome+ ' foi o vencedor')
+                
+
+            else:
+                input('Digite qualquer tecla para proximo jogador')
+
+    #regra de terminar
