@@ -46,6 +46,8 @@ def converterCor (corDado):
     else:
         corDado1 = 'VERMELHO' 
     return corDado1;
+
+
 print("Seja bem-vindo ao jogo Zombie Dice!");
 #bloco de condições de quantidade de jogadores
 quantidadeJogador = 0
@@ -121,14 +123,21 @@ while True:
     #resetar o turno
     if jogadorAtual >= len(listaJogadores):
         jogadorAtual = 0
-        vitoria = cerebros==13
+        jogadorVencedor = None
         for jogador in listaJogadores:
             if jogador.cerebros >= 13:
-                jogador.cerebros==vitoria
-                sys.exit('O jogador '+jogador.nome+ ' foi o vencedor')
-                
-
+                jogadorVencedor = jogador 
+                break
             else:
-                input('Digite qualquer tecla para proximo jogador')
+                jogador.cerebros >= jogador.cerebros
+                jogadorVencedor = jogador
+                break
+                
+        print('você venceu '+ jogador.nome + ' comeu ' + str(jogador.cerebros) + ' cerebros')
+    
+            
+
+
+    input('Digite qualquer tecla para proximo jogador')
 
     #regra de terminar
