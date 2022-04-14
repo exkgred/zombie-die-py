@@ -4,6 +4,7 @@ import itertools
 from lib2to3.pytree import convert
 from msilib import CreateRecord
 from os import remove
+from pickle import NONE
 import poplib
 import random
 from timeit import repeat
@@ -123,15 +124,16 @@ while True:
     #resetar o turno
     if jogadorAtual >= len(listaJogadores):
         jogadorAtual = 0
-        jogadorVencedor = None
+        possivelVencedor = NONE
         for jogador in listaJogadores:
             if jogador.cerebros >= 13:
-                jogadorVencedor = jogador 
-                break
-            else:
-                jogador.cerebros >= jogador.cerebros
-                jogadorVencedor = jogador
-                break
+                possivelVencedorQuantCerebros = jogador.cerebros
+                possivelVencedor = jogador
+
+            if possivelVencedorQuantCerebros >= possivelVencedor and possivelVencedor != NONE:
+                print() 
+                
+            
                 
         print('você venceu '+ jogador.nome + ' comeu ' + str(jogador.cerebros) + ' cerebros')
     
