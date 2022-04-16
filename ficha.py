@@ -32,7 +32,7 @@ def calculoEmpate(jogadores):
         if (max_value is None or num.cerebros > max_value):
             max_value = num.cerebros
             max_idx = idx
-            return max_idx, max_value
+    return max_idx, max_value
     
 class Jogador:
     nome = ''
@@ -134,17 +134,21 @@ while True:
     if jogadorAtual >= len(listaJogadores):
         jogadorAtual = 0
         possivelVencedor = []
-        
+        print('PRÓXIMO TURNO')
         max_idx, max_value = calculoEmpate(listaJogadores)
         for jogador in listaJogadores:
             if jogador.cerebros >= 13 and jogador.cerebros == max_value:
                 possivelVencedor.append(jogador)
+                #print(max_idx, max_value)
         if len(possivelVencedor) == 1: #apenas um ganhador
-            print('você venceu '+ possivelVencedor[0].nome + ' comeu ' + str(possivelVencedor[0].cerebros) + ' cerebros')
-            break
-        elif len(possivelVencedor) > 1: #empate            
-            listaJogadores = possivelVencedor
             
+            print('você venceu '+ possivelVencedor[0].nome + ' comeu ' + str(possivelVencedor[0].cerebros) + ' cerebros')
+            #print(max_idx, max_value)
+            break
+        elif len(possivelVencedor) > 1: #empate  
+            print('Houve um empate, os jogadores vão desputar a partida de desempate')          
+            listaJogadores = possivelVencedor
+        
         input('Digite qualquer tecla para proximo jogador')
 
     #regra de terminar
