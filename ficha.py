@@ -24,7 +24,16 @@ LISTA_DADOS = [
 DADO_VERDE_6,DADO_VERDE_6,DADO_VERDE_6,DADO_VERDE_6,DADO_VERDE_6,DADO_VERDE_6,
 DADO_AMARELHO_4, DADO_AMARELHO_4, DADO_AMARELHO_4, DADO_AMARELHO_4,
 DADO_VERMELHO_3,DADO_VERMELHO_3,DADO_VERMELHO_3]
+def calculoEmpate(jogadores):
+    max_value = None
+    max_idx = None
 
+    for idx, num in enumerate(jogadores):
+        if (max_value is None or num.cerebros > max_value):
+            max_value = num.cerebros
+            max_idx = idx
+            return max_idx, max_value
+    
 class Jogador:
     nome = ''
     dados = []
@@ -124,15 +133,20 @@ while True:
     #resetar o turno
     if jogadorAtual >= len(listaJogadores):
         jogadorAtual = 0
-        possivelVencedor = NONE
+        possivelVencedor = []
+        
         for jogador in listaJogadores:
             if jogador.cerebros >= 13:
-                possivelVencedorQuantCerebros = jogador.cerebros
-                possivelVencedor = jogador
-
-            if possivelVencedorQuantCerebros >= possivelVencedor and possivelVencedor != NONE:
-                print() 
+                possivelVencedor.append(jogador)
+        if len(possivelVencedor) == 1:
+            print('Você foi o vencedor '+possivelVencedor[1].nome)
+        
+        if len(possivelVencedor) > 1:
+            max_idx, max_value = calculoEmpate(possivelVencedor)
+            for jogador in possivelVencedor:
                 
+       
+
             
                 
         print('você venceu '+ jogador.nome + ' comeu ' + str(jogador.cerebros) + ' cerebros')
