@@ -149,11 +149,11 @@ while True:
 
             
                 
-        print('você venceu '+ jogador.nome + ' comeu ' + str(jogador.cerebros) + ' cerebros')
+        #print('você venceu '+ jogador.nome + ' comeu ' + str(jogador.cerebros) + ' cerebros')
     
             
 
 
-    input('Digite qualquer tecla para proximo jogador')
+        input('Digite qualquer tecla para proximo jogador')
 
     #regra de terminar
