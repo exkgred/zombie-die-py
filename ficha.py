@@ -135,25 +135,16 @@ while True:
         jogadorAtual = 0
         possivelVencedor = []
         
+        max_idx, max_value = calculoEmpate(listaJogadores)
         for jogador in listaJogadores:
-            if jogador.cerebros >= 13:
+            if jogador.cerebros >= 13 and jogador.cerebros == max_value:
                 possivelVencedor.append(jogador)
-        if len(possivelVencedor) == 1:
-            print('Você foi o vencedor '+possivelVencedor[1].nome)
-        
-        if len(possivelVencedor) > 1:
-            max_idx, max_value = calculoEmpate(possivelVencedor)
-            for jogador in possivelVencedor:
-                
-       
-
+        if len(possivelVencedor) == 1: #apenas um ganhador
+            print('você venceu '+ possivelVencedor[0].nome + ' comeu ' + str(possivelVencedor[0].cerebros) + ' cerebros')
+            break
+        elif len(possivelVencedor) > 1: #empate            
+            listaJogadores = possivelVencedor
             
-                
-        #print('você venceu '+ jogador.nome + ' comeu ' + str(jogador.cerebros) + ' cerebros')
-    
-            
-
-
         input('Digite qualquer tecla para proximo jogador')
 
     #regra de terminar
